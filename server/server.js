@@ -6,16 +6,12 @@ const socketIO = require('socket.io');
 const publicPath = path.join(__dirname,'../public');
 const port = process.env.PORT ||3000;
 
-
 // console.log(__dirname +'/../public');
 // console.log(publicPath);
 
 var app = express();
-
 var server = http.createServer(app);
 var io = socketIO(server);
-
-
 
 app.use(express.static(publicPath));
 io.on('connection',(socket)=>{
@@ -27,11 +23,11 @@ io.on('connection',(socket)=>{
     //     createAt :156
     // });
 
-    socket.emit('newMessage',{
-        from:'John',
-        text:'See you later!',
-        createAt:14545
-    })
+    // socket.emit('newMessage',{
+    //     from:'John',
+    //     text:'See you later!',
+    //     createAt:14545
+    // })
 
     // socket.on('createEmail',(newEmail)=>{
     //     console.log('createEmail',newEmail)
@@ -39,6 +35,11 @@ io.on('connection',(socket)=>{
 
     socket.on('createMessage',(message)=>{
         console.log('createMessage',message);
+        io.emit('newMessage',{
+            from:message.from,
+            text:message.text,
+            createdAt : new Date().getTime()
+        });
     });
 
 
